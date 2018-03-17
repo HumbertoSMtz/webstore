@@ -5,4 +5,5 @@ import com.wizard.webstore.domain.Product;
 
 public interface ProductRepository {
 	List <Product> getAllProducts();
+	Product getProductById(String productID);
 }

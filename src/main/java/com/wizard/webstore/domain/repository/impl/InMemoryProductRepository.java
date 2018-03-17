@@ -23,7 +23,8 @@ public class InMemoryProductRepository implements ProductRepository {
 		laptop_dell.setManufacturer("Dell");
 		laptop_dell.setUnitsInStock(1000);
 		Product tablet_Nexus = new Product("P1236", "Nexus 7", new BigDecimal(300));
-		tablet_Nexus.setDescription("Google Nexus 7 is the lightest 7 inch tablet With a quad-core Qualcomm Snapdragon™ S4 Pro processor");
+		tablet_Nexus.setDescription(
+				"Google Nexus 7 is the lightest 7 inch tablet With a quad-core Qualcomm Snapdragon™ S4 Pro processor");
 		tablet_Nexus.setCategory("Tablet");
 		tablet_Nexus.setManufacturer("Google");
 		tablet_Nexus.setUnitsInStock(1000);
@@ -34,5 +35,19 @@ public class InMemoryProductRepository implements ProductRepository {
 
 	public List<Product> getAllProducts() {
 		return listOfProducts;
+	}
+
+	public Product getProductById(String productId) {
+		Product productById = null;
+		for (Product product : listOfProducts) {
+			if (product != null && product.getProductId() != null && product.getProductId().equals(productId)) {
+				productById = product;
+				break;
+			}
+		}
+		if (productById == null) {
+			throw new IllegalArgumentException("No products found with the product id: " + productId);
+		}
+		return productById;
 	}
 }

@@ -12,8 +12,8 @@ css/bootstrap.min.css">
 	<section>
 		<div class="jumbotron">
 			<div class="container">
-				<h1>Products</h1>
-				<p>All the available products in our store</p>
+				<h1>Productos</h1>
+				<p>Todos disponibles en nuestra tienda</p>
 			</div>
 		</div>
 	</section>
@@ -26,7 +26,7 @@ css/bootstrap.min.css">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>
 							<p>$${product.unitPrice}</p>
-							<p>Available ${product.unitsInStock} units in stock</p>
+							<p> ${product.unitsInStock} unidades disponibles</p>
 						</div>
 					</div>
 				</div>
