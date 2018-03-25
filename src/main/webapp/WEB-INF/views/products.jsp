@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;
@@ -26,7 +27,14 @@ css/bootstrap.min.css">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>
 							<p>$${product.unitPrice}</p>
-							<p> ${product.unitsInStock} unidades disponibles</p>
+							<p>${product.unitsInStock} unidades disponibles</p>
+							<p>
+								<a
+									href="<spring:url value="/products/product?id=${product.productId}" />"
+									class="btn btn-primary"> <span
+									class="glyphicon-info-sign glyphicon" /></span> Detalles
+								</a>
+							</p>
 						</div>
 					</div>
 				</div>

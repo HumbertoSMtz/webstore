@@ -86,4 +86,39 @@ public class InMemoryProductRepository implements ProductRepository {
 		productsByCategory.retainAll(productsByBrand);
 		return productsByCategory;
 	}
+
+	public List<Product> getProductsByManufacturer(String manufacturer) {
+		List<Product> productsByManufacturer = new ArrayList<Product>();
+		for (Product product : listOfProducts) {
+			if (manufacturer.equalsIgnoreCase(product.getManufacturer())) {
+				productsByManufacturer.add(product);
+			}
+		}
+		return productsByManufacturer;	}
+
+	public Set<Product> getProductsByPriceFilter(Map<String, List<String>> filterParams) {
+		Set<Product> productsByPriceMin= new HashSet<Product>();
+		Set<Product> productsByPriceMax = new HashSet<Product>();
+		Set<String> criterias = filterParams.keySet();
+		if (criterias.contains("low")) {
+			for (String minPrice : filterParams.get("low")) {
+				for (Product product : listOfProducts) {
+					if (new BigDecimal(minPrice).compareTo(product.getUnitPrice())==-1 ||new BigDecimal(minPrice).compareTo(product.getUnitPrice())==0 ) {
+						productsByPriceMin.add(product);
+					}
+				}
+			}
+		}
+		if (criterias.contains("high")) {
+			for (String maxPrice : filterParams.get("high")) {
+				for (Product product : listOfProducts) {
+					if (new BigDecimal (maxPrice).compareTo(product.getUnitPrice())==1 || new BigDecimal (maxPrice).compareTo(product.getUnitPrice())==0) {
+						productsByPriceMax.add(product);
+					}
+				}
+			}
+		}
+		productsByPriceMin.retainAll(productsByPriceMax);
+		return productsByPriceMin;
+	}
 }
