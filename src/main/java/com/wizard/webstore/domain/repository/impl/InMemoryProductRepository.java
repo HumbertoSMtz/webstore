@@ -121,4 +121,8 @@ public class InMemoryProductRepository implements ProductRepository {
 		productsByPriceMin.retainAll(productsByPriceMax);
 		return productsByPriceMin;
 	}
+	
+	public void addProduct(Product product) {
+		listOfProducts.add(product);
+	}
 }

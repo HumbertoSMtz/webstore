@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wizard.webstore.domain.Product;
@@ -42,7 +44,8 @@ public class ProductController {
 	}
 
 	@RequestMapping("/filter/{ByCriteria}")
-	public String getProductsByFilter(@MatrixVariable(pathVar = "ByCriteria") Map<String, List<String>> filterParams, Model model) {
+	public String getProductsByFilter(@MatrixVariable(pathVar = "ByCriteria") Map<String, List<String>> filterParams,
+			Model model) {
 		model.addAttribute("products", productService.getProductsByFilter(filterParams));
 		return "products";
 	}
@@ -52,24 +55,33 @@ public class ProductController {
 		model.addAttribute("product", productService.getProductById(productId));
 		return "product";
 	}
-	
+
 	@RequestMapping("/{category}/{price}")
-	public String filterProducts(
-			@PathVariable("category") String productCategory, 
-			@MatrixVariable(pathVar = "price") Map<String, List<String>> filterParams, 
-			@RequestParam("manufacturer") String manufacturer,
-			Model model) {
-		
-		for(Product product : productService.getProductsByPriceFilter(filterParams)) {
-            System.out.println(product.getName());
-        }
-		
-		List<Product> filterProducts= productService.getProductsByCategory(productCategory);
-		
+	public String filterProducts(@PathVariable("category") String productCategory,
+			@MatrixVariable(pathVar = "price") Map<String, List<String>> filterParams,
+			@RequestParam("manufacturer") String manufacturer, Model model) {
+
+		for (Product product : productService.getProductsByPriceFilter(filterParams)) {
+			System.out.println(product.getName());
+		}
+
+		List<Product> filterProducts = productService.getProductsByCategory(productCategory);
+
 		filterProducts.retainAll(productService.getProductsByPriceFilter(filterParams));
 		filterProducts.retainAll(productService.getProductsByManufacturer(manufacturer));
 		model.addAttribute("products", filterProducts);
 		return "products";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String getAddNewProductForm(@ModelAttribute("newProduct") Product newProduct) {
+		return "addProduct";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct) {
+		productService.addProduct(newProduct);
+		return "redirect:/products";
 	}
 
 }
